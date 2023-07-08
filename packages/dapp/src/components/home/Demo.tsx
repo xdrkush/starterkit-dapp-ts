@@ -15,7 +15,7 @@ export default function Demo() {
 
   return (
     <Box>
-      <Heading size='xl'> Demo: </Heading>
+      <Heading size='xl'> Demo (sepolia): </Heading>
 
       {contract && contractIsConnected && (
         <>
