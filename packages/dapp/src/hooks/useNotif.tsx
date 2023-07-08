@@ -20,7 +20,7 @@ export const useNotif = () => {
                 position: 'top-right',
                 isClosable: true,
             })
-    }, [notif])
+    }, [notif, toast])
 
     return {
         notif,

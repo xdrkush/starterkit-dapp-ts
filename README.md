@@ -5,8 +5,8 @@ Projet d'examen chez alyra dev web3.
 ### Install
 
 ```sh
-git clone https://...
-cd <repository>
+git clone https://github.com/xdrkush/starterkit-dapp-ts
+cd starterkit-dapp-ts
 yarn
 ```
 

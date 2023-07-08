@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { getContract, prepareWriteContract, writeContract, readContract, waitForTransaction } from '@wagmi/core'
 import { useAccount, useContractEvent, useNetwork } from "wagmi"
@@ -25,7 +25,7 @@ export function useScanSecure() {
     const [whitelist, setWhitelist] = useState<object[]>();
 
     // Load contract
-    const loadContract = async () => {
+    const loadContract = useCallback(async () => {
         try {
             // const walletClient = await getWalletClient()
             const c = getContract({
@@ -49,7 +49,8 @@ export function useScanSecure() {
             setNotif({ type: "error", message: "Impossible de se connecter au contrat, êtes vous sur le bon réseaux ?" })
             setContractIsConnected(false)
         }
-    }
+    }, [setNotif])
+
     useEffect(() => {
         if (!isConnected) return;
         try {
@@ -57,10 +58,10 @@ export function useScanSecure() {
         } catch (error) {
             console.log(error)
         }
-    }, [isConnected, address, chain?.id])
+    }, [isConnected, address, chain?.id, loadContract])
 
     // Roles
-    const checkRoles = async () => {
+    const checkRoles = useCallback(async () => {
         // IsOwner
         try {
             if (!address) return;
@@ -82,11 +83,12 @@ export function useScanSecure() {
         } catch (error) {
             setNotif({ type: "error", message: String(error) })
         }
-    }
+    }, [address, contract, setNotif])
+
     useEffect(() => {
         if (!contractIsConnected) return;
         checkRoles()
-    }, [contract])
+    }, [contract, checkRoles, contractIsConnected])
 
     // Functions
     const register = async () => {
@@ -143,13 +145,13 @@ export function useScanSecure() {
         }
     }
 
-    const transactionsCompleted = async (_request: any) => {    
+    const transactionsCompleted = async (_request: any) => {
         const { hash } = await writeContract(_request)
-        setNotif({type: 'info', message: "Transactions Processing..."})
+        setNotif({ type: 'info', message: "Transactions Processing..." })
         const data = await waitForTransaction({
             hash: hash,
         })
-        setNotif({type: 'info', message: "Transactions effectué !"})
+        setNotif({ type: 'info', message: "Transactions effectué !" })
         confetti(0)
         return data
     }
@@ -194,7 +196,7 @@ export function useScanSecure() {
     useEffect(() => {
         if (!contractIsConnected) return;
         getWhitelisted()
-    }, [contract])
+    }, [contract, contractIsConnected])
 
     // export from hook
     return {

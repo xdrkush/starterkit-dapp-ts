@@ -58,22 +58,29 @@ export const wagmiConfig = createConfig({
  * Client viem
  */
 
-const chain = () => {
+let chain
+const loadChain = () => {
     switch (process.env.NEXT_PUBLIC_CLIENT_CHAIN) {
         case "mainnet":
-            return mainnet
+            chain = mainnet
+            break;
         case "sepolia":
-            return sepolia
+            chain = sepolia
+            break;
         case "mumbai":
-            return polygonMumbai
+            chain = polygonMumbai
+            break;
 
         default:
-            return hardhat;
+            chain = hardhat;
+            break;
     }
 }
+loadChain()
 
+// Client viem
 export const client = createPublicClient({
-    chain: chain(),
+    chain: chain,
     transport: http(),
 });
 
