@@ -1,0 +1,25 @@
+{
+  "name": "starterkitts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:xdrkush/starterkit-dapp-ts.git",
+  "author": "xdrkush <drkushikush@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "blockchain": "npm run blk --workspace=hardhat-project",
+    "dapp:dev": "npm run dev --workspace=dapp",
+    "dapp:start": "npm run start --workspace=dapp",
+    "dapp:build": "npm run build --workspace=dapp",
+    "sc:help": "npm run help --workspace=hardhat-project",
+    "sc:test": "npm run test --workspace=hardhat-project",
+    "sc:coverage": "npm run coverage --workspace=hardhat-project",
+    "sc:deploy:local": "npm run deploy:local --workspace=hardhat-project",
+    "sc:deploy:goerli": "npm run deploy:goerli --workspace=hardhat-project",
+    "sc:deploy:sepolia": "npm run deploy:sepolia --workspace=hardhat-project",
+    "sc:clean": "npm run clean --workspace=hardhat-project"
+  }
+}
