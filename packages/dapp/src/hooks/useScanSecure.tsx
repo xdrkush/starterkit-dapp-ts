@@ -169,8 +169,7 @@ export function useScanSecure() {
                 checkRoles()
             }
             setNotif({ type: 'info', message: String(log[0].args.addr) })
-            if (!whitelist) return;
-            setWhitelist([...whitelist, { id: whitelist.length, address: String(log[0].args.addr) }])
+            getWhitelisted()
         }
     })
 
