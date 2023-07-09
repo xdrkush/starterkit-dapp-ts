@@ -1,4 +1,6 @@
-export const address: string = "0xB08BF7FF71B5F233153F2391DD62cDfDbBaB3818"
+// Sepolia: 0x1531beEef92D72EAAAb16cB6446AB52B3B4197dD
+// Hardhat: 0x5FbDB2315678afecb367f032d93F642f64180aa3
+export const address: string = "0x1531beEef92D72EAAAb16cB6446AB52B3B4197dD"
 
 export const abi = [
     {
