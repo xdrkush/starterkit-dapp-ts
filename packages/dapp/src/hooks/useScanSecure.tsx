@@ -52,10 +52,11 @@ export function useScanSecure() {
             const owner = await c.read.owner() ? String(await c.read.owner()) : null
 
             setContractIsConnected(true)
+            setContract(c)
             getStore()
+            
             // // Set state hook
             if (!owner) return
-            setContract(c)
             setOwner(getAddress(owner))
 
 
