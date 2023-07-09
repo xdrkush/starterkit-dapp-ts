@@ -51,12 +51,14 @@ export function useScanSecure() {
             console.log('loadContract', c, await c.read.owner())
             const owner = await c.read.owner() ? String(await c.read.owner()) : null
 
+            setContractIsConnected(true)
+            getStore()
             // // Set state hook
             if (!owner) return
             setContract(c)
             setOwner(getAddress(owner))
 
-            setContractIsConnected(true)
+
         } catch (error) {
             console.log('error use effect')
             setNotif({ type: "error", message: "Impossible de se connecter au contrat, êtes vous sur le bon réseaux ?" })
@@ -212,7 +214,6 @@ export function useScanSecure() {
     useEffect(() => {
         if (!contractIsConnected) return;
         getWhitelisted()
-        getStore()
     }, [contract, contractIsConnected])
 
     // export from hook
