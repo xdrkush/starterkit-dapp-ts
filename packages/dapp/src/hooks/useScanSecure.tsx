@@ -8,6 +8,21 @@ import { useNotif } from './useNotif';
 import { config, client } from "@/config"
 import { confetti } from '@/utils';
 
+// Warn the event in library solidity is not extract on abi 
+const abiWithEventInLibrary = [...config.contracts.scanSecure.abi, {
+    "anonymous": false,
+    "inputs": [
+        {
+            "indexed": false,
+            "internalType": "address",
+            "name": "addr",
+            "type": "address"
+        }
+    ],
+    "name": "Whitelisted",
+    "type": "event"
+}] as const
+
 export function useScanSecure() {
     const { isConnected, address } = useAccount()
     const { chain } = useNetwork()
@@ -35,13 +50,11 @@ export function useScanSecure() {
 
             console.log('loadContract', c, await c.read.owner())
             const owner = await c.read.owner() ? String(await c.read.owner()) : null
-            const store = await c.read.store() ? Number(await c.read.store()) : null
 
             // // Set state hook
             if (!owner) return
             setContract(c)
             setOwner(getAddress(owner))
-            setStore(Number(store))
 
             setContractIsConnected(true)
         } catch (error) {
@@ -122,8 +135,12 @@ export function useScanSecure() {
 
     const getStore = async () => {
         try {
-            const store = await contract.read.store()
-            setStore(store)
+            const data = await readContract({
+                address: getAddress(config.contracts.scanSecure.address),
+                abi: config.contracts.scanSecure.abi,
+                functionName: 'getStore'
+            })
+            setStore(Number(data))
             return store
         } catch (error) {
             setNotif({ type: "error", message: String(error) })
@@ -159,16 +176,15 @@ export function useScanSecure() {
     // Events watcher
     useContractEvent({
         address: getAddress(config.contracts.scanSecure.address),
-        abi: config.contracts.scanSecure.abi,
+        abi: abiWithEventInLibrary, // Warn with event in library
         eventName: 'Whitelisted',
         listener(log) {
-            console.log('event1', address, String(log[0].args.addr))
-            console.log('event1', whitelist, String(address) === String(log[0].args.addr))
             if (String(address) === String(log[0].args.addr)) {
                 setNotif({ type: 'info', message: 'Vous êtes Whitelisted' })
                 checkRoles()
             }
             setNotif({ type: 'info', message: String(log[0].args.addr) })
+
             getWhitelisted()
         }
     })
@@ -192,9 +208,11 @@ export function useScanSecure() {
         setWhitelist(whitelist)
     }
 
+    // Load Data/Storage
     useEffect(() => {
         if (!contractIsConnected) return;
         getWhitelisted()
+        getStore()
     }, [contract, contractIsConnected])
 
     // export from hook

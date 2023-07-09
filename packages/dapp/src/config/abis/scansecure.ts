@@ -1,4 +1,4 @@
-export const address: string = "0xB08BF7FF71B5F233153F2391DD62cDfDbBaB3818"
+export const address: string = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
 
 export const abi = [
     {
@@ -21,17 +21,17 @@ export const abi = [
         "type": "event"
     },
     {
-        "anonymous": false,
-        "inputs": [
+        "inputs": [],
+        "name": "getStore",
+        "outputs": [
             {
-                "indexed": false,
-                "internalType": "address",
-                "name": "addr",
-                "type": "address"
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
             }
         ],
-        "name": "Whitelisted",
-        "type": "event"
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [
@@ -91,19 +91,6 @@ export const abi = [
         "name": "setStore",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "store",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
